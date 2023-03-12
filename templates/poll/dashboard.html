@@ -1,0 +1,74 @@
+{% extends "poll/base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+
+
+<!--Topside-->
+<div class="container">
+  <div class="row mt-4">
+      <div class="col-md-4">
+          <div class="card">
+            
+              <div class="card-header text-bg-dark mb-3"   >
+                  Information
+              </div>
+              <div class="card-body">
+                  <marquee behavior="" direction="">
+                    <h2 class="my-4"> Hi, Welcome  {{ user.username }}</h2>
+                  </marquee>
+              </div>
+          </div>
+      </div>
+      
+
+
+      
+      <div class="col-md-6">
+          <div class="card">
+              <div class="card-header text-bg-dark mb-3" >
+                  Cast your Votes 
+              </div>
+              <div class="card-body">
+                  <div class="row">
+                      <div class="col-md-4">
+                        
+                        
+                            <a  class="text-decoration-none text-dark" href="{% url 'position' %}">
+                              <div class="card my-card shadow text-center p-3 btn-outline-primary">
+                                  <h4> Vote <i class="fas fa-users"></i></h4>
+                                 
+                                 
+
+                              </div>
+                          </a>
+                      </div>
+                      <div class="col-md-4">
+                        {% if request.user.is_staff and user.is_superuser %}
+                        <a class="text-decoration-none text-dark"   href="{% url 'result' %}">  
+                              <div class="card my-card shadow text-center p-3 btn-outline-primary">
+                                  <h4> Results   <i class="fas fa-box"></i></h4>
+                                 
+                              </div>
+                          </a>            
+         
+                         {% endif %}
+                      </div>
+
+                      
+                     
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<!--End Topside-->
+
+
+  
+ 
+
+
+{% endblock %}

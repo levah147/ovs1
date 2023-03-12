@@ -1,0 +1,509 @@
+
+
+{% extends "poll/base.html" %}
+
+{% block title %}news{% endblock %}
+
+{% block content %}
+
+
+<style>
+    
+
+    /* custom scroll bar */
+    ::-webkit-scrollbar {
+        width: 10px;
+    }
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: #888;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+    
+    /* all similar content styling codes */
+    section{
+        padding: 100px 0;
+    }
+    .max-width{
+        max-width: 1300px;
+        padding: 0 80px;
+        margin: auto;
+    }
+    .about, .services, .skills, .teams, .contact, footer{
+        font-family: 'Poppins', sans-serif;
+    }
+    .about .about-content,
+    .services .serv-content,
+    .skills .skills-content,
+    .contact .contact-content{
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+    }
+    section .title{
+        position: relative;
+        text-align: center;
+        font-size: 40px;
+        font-weight: 500;
+        margin-bottom: 60px;
+        padding-bottom: 20px;
+        font-family: 'Ubuntu', sans-serif;
+    }
+    section .title::before{
+        content: "";
+        position: absolute;
+        bottom: 0px;
+        left: 50%;
+        width: 180px;
+        height: 3px;
+        background: #111;
+        transform: translateX(-50%);
+    }
+    section .title::after{
+        position: absolute;
+        bottom: -8px;
+        left: 50%;
+        font-size: 20px;
+        color: crimson;
+        padding: 0 5px;
+        background: #fff;
+        transform: translateX(-50%);
+    }
+    
+    
+    /* menu btn styling */
+    .menu-btn{
+        color: #fff;
+        font-size: 23px;
+        cursor: pointer;
+        display: none;
+    }
+    .scroll-up-btn{
+        position: fixed;
+        height: 45px;
+        width: 42px;
+        background: crimson;
+        right: 30px;
+        bottom: 10px;
+        text-align: center;
+        line-height: 45px;
+        color: #fff;
+        z-index: 9999;
+        font-size: 30px;
+        border-radius: 6px;
+        border-bottom-width: 2px;
+        cursor: pointer;
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.3s ease;
+    }
+    .scroll-up-btn.show{
+        bottom: 30px;
+        opacity: 1;
+        pointer-events: auto;
+    }
+    .scroll-up-btn:hover{
+        filter: brightness(90%);
+    }
+    
+    
+    /* home section styling */
+    .home{
+        display: flex;
+        background: url("image/lil1.png") no-repeat center;
+        background: #000000 transparent;
+        height: 100vh;
+        color: rgb(255, 255, 255);
+        min-height: 500px;
+        background-size: cover;
+        background-attachment: fixed;
+        font-family: 'Ubuntu', sans-serif;
+    }
+    .home .max-width{
+      width: 100%;
+      display: flex;
+    }
+    .home .max-width .row{
+      margin-right: 0;
+    }
+    .home .home-content .text-1{
+        font-size: 27px;
+    }
+    .home .home-content .text-2{
+        font-size: 75px;
+        font-weight: 600;
+        margin-left: -3px;
+    }
+    .home .home-content .text-3{
+        font-size: 40px;
+        margin: 5px 0;
+    }
+    .home .home-content .text-3 span{
+        color: crimson;
+        font-weight: 500;
+    }
+    .home .home-content a{
+        display: inline-block;
+        background: crimson;
+        color: #fff;
+        font-size: 25px;
+        padding: 12px 36px;
+        margin-top: 20px;
+        font-weight: 400;
+        border-radius: 6px;
+        border: 2px solid crimson;
+        transition: all 0.3s ease;
+    }
+    .home .home-content a:hover{
+        color: crimson;
+        background: none;
+    }
+    
+    /* about section styling */
+    .about .title::after{
+        content: "verifed ";
+    }
+    .about .about-content .left{
+        width: 45%;
+    }
+    .about .about-content .left img{
+        height: 400px;
+        width: 400px;
+        object-fit: cover;
+        border-radius: 6px;
+    }
+    .about .about-content .right{
+        width: 55%;
+    }
+    .about .about-content .right .text{
+        font-size: 25px;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+    .about .about-content .right .text span{
+        color: crimson;
+    }
+    .about .about-content .right p{
+        text-align: justify;
+    }
+    .about .about-content .right a{
+        display: inline-block;
+        background: crimson;
+        color: #fff;
+        font-size: 20px;
+        font-weight: 500;
+        padding: 10px 30px;
+        margin-top: 20px;
+        border-radius: 6px;
+        border: 2px solid crimson;
+        transition: all 0.3s ease;
+    }
+    .about .about-content .right a:hover{
+        color: crimson;
+        background: none;
+    }
+    
+    /* services section styling */
+    .services, .teams{
+        color:#fff;
+        background: #111;
+    }
+    .services .title::before,
+    .teams .title::before{
+        background: #fff;
+    }
+    .services .title::after,
+    .teams .title::after{
+        background: #111;
+        content: "what i provide";
+    }
+    .services .serv-content .card{
+        width: calc(33% - 20px);
+        background: #222;
+        text-align: center;
+        border-radius: 6px;
+        padding: 50px 25px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    .services .serv-content .card:hover{
+        background: crimson;
+    }
+    .services .serv-content .card .box{
+        transition: all 0.3s ease;
+    }
+    .services .serv-content .card:hover .box{
+        transform: scale(1.05);
+    }
+    .services .serv-content .card i{
+        font-size: 50px;
+        color: crimson;
+        transition: color 0.3s ease;
+    }
+    .services .serv-content .card:hover i{
+        color: #fff;
+    }
+    .services .serv-content .card .text{
+        font-size: 25px;
+        font-weight: 500;
+        margin: 10px 0 7px 0;
+    }
+    
+    /* skills section styling */
+    
+    .skills .title::after{
+        content: "what i know";
+    }
+    .skills .skills-content .column{
+        width: calc(50% - 30px);
+    }
+    .skills .skills-content .left .text{
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+    .skills .skills-content .left p{
+        text-align: justify;
+    }
+    .skills .skills-content .left a{
+        display: inline-block;
+        background: crimson;
+        color: #fff;
+        font-size: 18px;
+        font-weight: 500;
+        padding: 8px 16px;
+        margin-top: 20px;
+        border-radius: 6px;
+        border: 2px solid crimson;
+        transition: all 0.3s ease;
+    }
+    .skills .skills-content .left a:hover{
+        color: crimson;
+        background: none;
+    }
+    .skills .skills-content .right .bars{
+        margin-bottom: 15px;
+    }
+    .skills .skills-content .right .info{
+        display: flex;
+        margin-bottom: 5px;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .skills .skills-content .right span{
+        font-weight: 500;
+        font-size: 18px;
+    }
+    .skills .skills-content .right .line{
+        height: 5px;
+        width: 100%;
+        background: lightgrey;
+        position: relative;
+    }
+    .skills .skills-content .right .line::before{
+        content: "";
+        position: absolute;
+        height: 100%;
+        left: 0;
+        top: 0;
+        background: crimson;
+    }
+    .skills-content .right .html::before{
+        width: 90%;
+    }
+    .skills-content .right .css::before{
+        width: 60%;
+    }
+    .skills-content .right .js::before{
+        width: 80%;
+    }
+    .skills-content .right .php::before{
+        width: 50%;
+    }
+    .skills-content .right .mysql::before{
+        width: 70%;
+    }
+        /* footer section styling */
+    footer{
+        background: #111;
+        padding: 15px 23px;
+        color: #fff;
+        text-align: center;
+    }
+    footer span a{
+        color: crimson;
+        text-decoration: none;
+    }
+    footer span a:hover{
+        text-decoration: underline;
+    }
+    
+    
+    /* responsive media query start */
+    @media (max-width: 1104px) {
+        .about .about-content .left img{
+            height: 350px;
+            width: 350px;
+        }
+    }
+    
+    @media (max-width: 991px) {
+        .max-width{
+            padding: 0 50px;
+        }
+    }
+    @media (max-width: 947px){
+        .menu-btn{
+            display: block;
+            z-index: 999;
+        }
+        .menu-btn i.active:before{
+            content: "\f00d";
+        }
+        .navbar .menu{
+            position: fixed;
+            height: 100vh;
+            width: 100%;
+            left: -100%;
+            top: 0;
+            background: #111;
+            text-align: center;
+            padding-top: 80px;
+            transition: all 0.3s ease;
+        }
+        .navbar .menu.active{
+            left: 0;
+        }
+        .navbar .menu li{
+            display: block;
+        }
+        .navbar .menu li a{
+            display: inline-block;
+            margin: 20px 0;
+            font-size: 25px;
+        }
+        .home .home-content .text-2{
+            font-size: 70px;
+        }
+        .home .home-content .text-3{
+            font-size: 35px;
+        }
+        .home .home-content a{
+            font-size: 23px;
+            padding: 10px 30px;
+        }
+        .max-width{
+            max-width: 930px;
+        }
+        .about .about-content .column{
+            width: 100%;
+        }
+        .about .about-content .left{
+            display: flex;
+            justify-content: center;
+            margin: 0 auto 60px;
+        }
+        .about .about-content .right{
+            flex: 100%;
+        }
+        .services .serv-content .card{
+            width: calc(50% - 10px);
+            margin-bottom: 20px;
+        }
+        .skills .skills-content .column,
+        .contact .contact-content .column{
+            width: 100%;
+            margin-bottom: 35px;
+        }
+    }
+    
+    @media (max-width: 690px) {
+        .max-width{
+            padding: 0 23px;
+        }
+        .home .home-content .text-2{
+            font-size: 60px;
+        }
+        .home .home-content .text-3{
+            font-size: 32px;
+        }
+        .home .home-content a{
+            font-size: 20px;
+        }
+        .services .serv-content .card{
+            width: 100%;
+        }
+    }
+    
+    @media (max-width: 500px) {
+        .home .home-content .text-2{
+            font-size: 50px;
+        }
+        .home .home-content .text-3{
+            font-size: 27px;
+        }
+        .about .about-content .right .text,
+        .skills .skills-content .left .text{
+            font-size: 19px;
+        }
+        .contact .right form .fields{
+            flex-direction: column;
+        }
+        .contact .right form .name,
+        .contact .right form .email{
+            margin: 0;
+        }
+        .right form .error-box{
+           width: 150px;
+        }
+        .scroll-up-btn{
+            right: 15px;
+            bottom: 15px;
+            height: 38px;
+            width: 35px;
+            font-size: 23px;
+            line-height: 38px;
+        }
+    }
+    
+    </style>
+    
+
+
+        
+        
+<section class="contact" id="contact">
+    <div class="max-width">
+        <h2 class="title">Dominion University Ibadan</h2>
+        <div class="contact-content">
+            <div class="column left">
+                
+                <p>Dominion University Ibadan is a private university located in Ibadan, Oyo State, Nigeria. The institution was established in 2019 and is committed to providing quality education to its students in various fields of study.
+
+                    In terms of online voting, it is important to note that Dominion University Ibadan has not yet implemented an online voting system. However, the university has recognized the importance of technology in enhancing the voting process and has expressed interest in exploring the possibility of online voting in the future.
+                    
+                    Online voting is a process of casting votes electronically through the internet or other digital means. It has become increasingly popular in recent years as it offers several advantages over traditional paper-based voting, such as increased accessibility, reduced costs, and improved accuracy.
+                    
+                    If Dominion University Ibadan decides to implement online voting, it would need to ensure that the system is secure, reliable, and user-friendly. This would involve using appropriate encryption and authentication protocols to prevent unauthorized access to the system, as well as conducting extensive testing to ensure that the system can handle a large volume of votes without any technical glitches.
+                    
+                    Furthermore, the university would need to educate its students on how to use the online voting system and ensure that the voting process is transparent and fair. This could involve providing students with clear instructions on how to cast their votes and ensuring that the system is auditable, so that the results can be verified and any potential issues can be identified and resolved.
+                    
+                    In conclusion, while Dominion University Ibadan has not yet implemented online voting, the institution has expressed interest in exploring this option in the future. If the university decides to implement an online voting system, it would need to ensure that the system is secure, reliable, and user-friendly, as well as ensuring that the voting process is transparent and fair.</p>
+                
+                
+            </div>
+        </div>
+    </div>
+</section>
+        
+  
+
+{% endblock %}
+
+

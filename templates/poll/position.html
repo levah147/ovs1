@@ -1,0 +1,53 @@
+{% extends "poll/base.html" %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+
+
+<!--Topside-->
+<div class="container">
+  <div class="row mt-4">
+      <div class="col-md-4">
+          
+                  
+              </div>
+          </div>
+      </div>
+      <div class="col-md-8">
+          <div class="card">
+              <div class="card-header bg-info text-white">
+                <h2>Available Position For Vote</h2>
+              </div>
+              <div class="card-body">
+                  <div class="row">
+                    {% for i in obj %}
+                      <div class="col-md-4">
+                          <a class="text-decoration-none text-dark" href="staff.html">
+                            <a href="{% url 'candidate' i.id %}">
+                              <div class="card my-card shadow text-center p-3 btn-outline-primary">
+                                  <h4 style="color: rgb(99, 79, 70); ">{{i.title}} <i class="fas fa-users"></i></h4>
+                                
+                              </div>
+                          </a>
+                      </div>
+                      {% empty %}
+                      <p>No Positions Available</p>
+                      {% endfor %}
+                     
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<!--End Topside-->
+
+
+ 
+  <ul>
+   
+     
+   
+  </ul>
+{% endblock %}
